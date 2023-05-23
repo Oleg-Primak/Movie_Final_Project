@@ -1,8 +1,9 @@
-import {API_KEY }from "./app"
-import {API_URL}from "./app"
+import {API_KEY }from "./api"
+import {API_URL}from "./api"
   
 let offset = 0;
 const sliderLine = document.querySelector('.slider-line');
+let imgs = document.querySelectorAll("img");
 
 document.querySelector('.button__next').addEventListener('click', function() {
     offset = offset + 256;
@@ -22,19 +23,6 @@ document.querySelector('.button__prev').addEventListener('click', function() {
   sliderLine.style.left = - offset + 'px';
 });
 
-
-let imgs = document.querySelectorAll("img");
-
-for (let i = 0; i < imgs.length; i++) {
-  imgs[i].addEventListener("click", (e) => {
-    let src = e.currentTarget.src;
-    let newWin = window.open("","","popup");
-    console.log(newWin)
-    newWin.document.write("<img src='" + src + "' alt='something' />")
-  });
-}
-
-  
 async function getMoviesSlider(url) {
     const resp = await fetch(url, {
         headers: {
@@ -55,12 +43,11 @@ function showMoviesSlider(data) {
         const movieEl = document.createElement("li");
        // movieEl.classList.add("img");
         movieEl.innerHTML = `
-    
+
              <img class="img" 
              src="${movie.posterUrlPreview}" alt=""
              />
-        
-    
+             
         `;
     moviesEl.appendChild(movieEl);
     movieEl.addEventListener("click", () => openWindow(movie.kinopoiskId))
@@ -76,10 +63,7 @@ async function openWindow(id) {
   });
 
   const respData = await resp.json();
-  //console.log(respData);
-  //console.log(id)
-  window.open(`${respData.webUrl}`)
+  window.open(`${respData.webUrl.replace("www.kinopoisk.ru", "1ww.frkp.live")}`)
 }
-
 
 export default getMoviesSlider;
